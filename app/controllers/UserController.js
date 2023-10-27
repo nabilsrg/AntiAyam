@@ -16,9 +16,10 @@ const UserController = {
 
     // Membuat pengguna baru
     UserModel.createUser(userData, (err, userId) => {
-        if (err.code = 'ER_DUP_ENTRY') {
+        if (err) {
+          if (err.code = 'ER_DUP_ENTRY' )
             return res.status(500).json({ message: 'ganti username' });
-        } else if (err) {
+          else 
             console.error('Gagal membuat pengguna: ' + err.message);
             return res.status(500).json({ message: 'Gagal membuat pengguna' });
         } else {

@@ -19,7 +19,7 @@ const MessageController = {
             console.error('Gagal membuat pesan: ' + err.message);
             return res.status(500).json({ message: 'Gagal mengirim pesan' });
         } else {
-            console.log('Pesan berhasil terkirim dengan ID: ' + messageId + ', pengirim ID: ' + messageData.userId);
+            console.log('Pesan berhasil terkirim dengan ID: ' + messageId + ', pengirim: ' + messageData.username);
             return res.status(201).json({ message: 'Pesan berhasil terkirim', messageId });
         }
       });
@@ -45,7 +45,7 @@ const MessageController = {
 
 function isValidUserData(messageData) {
     // Contoh validasi sederhana, Anda bisa menambahkan validasi yang lebih kompleks sesuai kebutuhan
-    return messageData.userId && messageData.content;
+    return messageData.username && messageData.content;
 }
 
 module.exports = MessageController;

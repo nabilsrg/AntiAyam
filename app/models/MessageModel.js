@@ -4,11 +4,10 @@ const db = require('../../config/database');
 const MessageModel = {
     //membuat pesan baru
     createMessage: (message, callback) => {
-        const { userId, content } = message;
+        const { username, content } = message;
         var mysqlTimestamp = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        console.log(mysqlTimestamp);
-        const query = 'INSERT INTO messages (user_id, content, timestamp) VALUES (?, ?, ?)';
-        db.query(query, [userId, content, mysqlTimestamp], (err, results) => {
+        const query = 'INSERT INTO messages (username, content, timestamp) VALUES (?, ?, ?)';
+        db.query(query, [username, content, mysqlTimestamp], (err, results) => {
             if (err) {
             console.log(err)
             callback(err, null);

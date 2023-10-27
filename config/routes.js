@@ -9,7 +9,7 @@ router.get('/AntiAyam/login', (req, res) => {
 }); 
 
 router.get('/AntiAyam', (req, res) => {
-    res.render('chat_room')
+    res.render('chat')
 }); 
 
 router.use('/user', userRoutes);

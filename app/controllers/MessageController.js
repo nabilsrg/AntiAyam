@@ -6,23 +6,24 @@ const req = require('express/lib/request');
 const MessageController = {
     // Fungsi untuk menambahkan pesan
     send: (req, res) => {
-      const messageData = req.body;
-   
-      //Validasi data pesan (misalnya: pastikan data yang diperlukan ada)
-      if (!isValidUserData(messageData)) {
-        return res.status(400).json({ message: 'Data pesan kosong atau tidak valid' });
-      }
-  
-      // Membuat pesan baru
-      MessageModel.createMessage(messageData, (err, messageId) => {
-        if (err) {
-            console.error('Gagal membuat pesan: ' + err.message);
-            return res.status(500).json({ message: 'Gagal mengirim pesan' });
-        } else {
-            console.log('Pesan berhasil terkirim dengan ID: ' + messageId + ', pengirim ID: ' + messageData.userId);
-            return res.status(201).json({ message: 'Pesan berhasil terkirim', messageId });
+        const username = req.session.username
+        const content = req.body.content;
+    
+        //Validasi data pesan (misalnya: pastikan data yang diperlukan ada)
+        if (!isValidUserData(content, username)) {
+            return res.status(400).json({ message: 'Data pesan kosong atau tidak valid' });
         }
-      });
+    
+        // Membuat pesan baru
+        MessageModel.createMessage(content, username, (err, messageId) => {
+            if (err) {
+                console.error('Gagal membuat pesan: ' + err.message);
+                return res.status(500).json({ message: 'Gagal mengirim pesan' });
+            } else {
+                console.log('Pesan berhasil terkirim dengan ID: ' + messageId + ', pengirim: ' + username);
+                return res.status(201).json({ message: 'Pesan berhasil terkirim', messageId });
+            }
+        });
     },
 
     //menampilkan semua pesan
@@ -43,9 +44,9 @@ const MessageController = {
     }
 };
 
-function isValidUserData(messageData) {
+function isValidUserData(content, username) {
     // Contoh validasi sederhana, Anda bisa menambahkan validasi yang lebih kompleks sesuai kebutuhan
-    return messageData.userId && messageData.content;
+    return content && username;
 }
 
 module.exports = MessageController;

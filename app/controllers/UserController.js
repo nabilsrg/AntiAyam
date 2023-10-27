@@ -45,6 +45,7 @@ const UserController = {
         if (match) {
         console.log('Pengguna berhasil masuk: ' + user);
 
+        req.session.username = username;
         return res.status(200).json({ message: 'Pengguna berhasil masuk', user: user});
         } else {
             console.log('Pengguna gagal masuk');

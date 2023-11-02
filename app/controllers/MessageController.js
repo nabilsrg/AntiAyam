@@ -46,7 +46,6 @@ const MessageController = {
 
 function isValidUserData(content, username) {
     // Contoh validasi sederhana, Anda bisa menambahkan validasi yang lebih kompleks sesuai kebutuhan
-    console.log(content, username)
     return content && username;
 }
 

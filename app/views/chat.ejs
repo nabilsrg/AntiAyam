@@ -51,11 +51,21 @@
     </form>
     <script type="text/javascript" defer>
       let socket = io();
-      socket.emit("new-user");
+      const username = localStorage.getItem("username");
+      if (username) {
+        // Gunakan data respons sesuai kebutuhan
+        socket.emit("new-user", username);
+      } else {
+        console.log("tidak ada response data");
+      }
 
       const sendForm = document.getElementById("send-container");
       const contentInput = document.getElementById("content");
       const messageContainer = document.getElementById("message-container");
+
+      socket.on("chat-message", (data) => {
+        appendMessage(`${data.name}: ${data.message}`);
+      });
 
       sendForm.addEventListener("submit", async (e) => {
         e.preventDefault(); // Mencegah pembaruan halaman
@@ -74,6 +84,9 @@
             const result = await response.json();
             const message = contentInput.value;
             appendMessage(`You: ${message}`);
+
+            // Memanggil fungsi socket send-chat-message
+            socket.emit("send-chat-message", message);
 
             // Hapus teks dari input
             contentInput.value = "";

@@ -36,9 +36,9 @@ server.listen(port, () => {
 const users = {}
 
 io.on('connection', socket => {
-    socket.on('new-user', name => {
-      users[socket.id] = name; // Menyimpan username dalam variabel users
-      console.log(`User ${name} terhubung.`);
+    socket.on('new-user', username => {
+      users[socket.id] = username; // Menyimpan username dalam variabel users
+      console.log(`User ${username} terhubung.`);
     });
     socket.on('send-chat-message', message => {
         socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })

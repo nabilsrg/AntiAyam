@@ -5,7 +5,6 @@ const MessageModel = {
     //membuat pesan baru
     createMessage: (message, username, callback) => {
         var mysqlTimestamp = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        console.log(mysqlTimestamp);
         const query = 'INSERT INTO messages (username, content, timestamp) VALUES (?, ?, ?)';
         db.query(query, [username, message, mysqlTimestamp], (err, results) => {
             if (err) {

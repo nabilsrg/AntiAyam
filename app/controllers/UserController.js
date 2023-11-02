@@ -8,9 +8,8 @@ const UserController = {
   // Fungsi untuk pendaftaran pengguna
   register: (req, res) => {
     const userData = req.body;
- 
     //Validasi data pengguna (misalnya: pastikan data yang diperlukan ada)
-    if (!isValidUserData(userData)) {
+    if (!isValidUserDataRegister(userData)) {
       return res.status(400).json({ message: 'Data pengguna kosong atau tidak valid' });
     }
 
@@ -31,14 +30,14 @@ const UserController = {
 
   // Fungsi untuk masuk pengguna
   login: (req, res) => {
-    const { username, password } = req.body;
+    const { id, password } = req.body;
 
-    if (!isValidUserData(req.body)) {
+    if (!isValidUserDataLogin(req.body)) {
         return res.status(400).json({ message: 'Data pengguna kosong atau tidak valid '+ username });
     }
 
     // Melakukan otentikasi pengguna
-    UserModel.authenticateUser(username, password, (err, match, user) => {
+    UserModel.authenticateUser(id, password, (err, match, user) => {
       if (err) {
         console.error('Gagal masuk pengguna: ' + err.message);
         return res.status(401).json({ message: 'Gagal masuk pengguna' });
@@ -46,7 +45,7 @@ const UserController = {
         if (match) {
         console.log('Pengguna berhasil masuk: ' + user);
 
-        req.session.username = username;
+        req.session.username = user;
         return res.status(200).json({ message: 'Pengguna berhasil masuk', user: user});
         } else {
             console.log('Pengguna gagal masuk');
@@ -59,8 +58,12 @@ const UserController = {
 };
 
 // Fungsi bantuan untuk validasi data pengguna agar tidak kosong
-function isValidUserData(userData) {
-  return userData.username && userData.password;
+function isValidUserDataRegister(userData) {
+  return userData.username && userData.password && userData.id;
+}
+
+function isValidUserDataLogin(userData) {
+  return userData.password && userData.id;
 }
 
 module.exports = UserController;

@@ -4,9 +4,9 @@ const db = require('../../config/database');
 const UserModel = {
   //membuat data user baru
   createUser: (user, callback) => {
-    const { username, password } = user;
-    const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    db.query(query, [username, password], (err, results) => {
+    const { username, id, password } = user;
+    const query = 'INSERT INTO users (username, id, password) VALUES (?, ?, ?)';
+    db.query(query, [username, id, password], (err, results) => {
       if (err) {
         console.log(err)
         callback(err, null);
@@ -17,8 +17,8 @@ const UserModel = {
   },
 
   //mencocokkan password
-  authenticateUser: (username, password, callback) => {
-    UserModel.getUserByUsername(username, (err, user) => {
+  authenticateUser: (id, password, callback) => {
+    UserModel.getUserById(id, (err, user) => {
       if (err) {
         callback(err, null, null);
       } else {

@@ -14,7 +14,7 @@ const UserController = {
     }
 
     // Membuat pengguna baru
-    UserModel.createUser(userData, (err, userId) => {
+    UserModel.createUser(userData, (err) => {
         if (err) {
           if (err.code = 'ER_DUP_ENTRY' )
             return res.status(500).json({ message: 'ganti username' });
@@ -22,8 +22,9 @@ const UserController = {
             console.error('Gagal membuat pengguna: ' + err.message);
             return res.status(500).json({ message: 'Gagal membuat pengguna' });
         } else {
-            console.log('Pengguna berhasil terdaftar dengan ID: ' + userId);
-            return res.status(201).json({ message: 'Pengguna berhasil terdaftar', userId });
+            const userId = userData.id
+            console.log('Pengguna berhasil terdaftar dengan id: ' + userId);
+            return res.status(201).json({ message: 'Pengguna berhasil terdaftar', userId});
         }
     });
   },

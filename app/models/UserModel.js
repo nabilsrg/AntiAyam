@@ -9,9 +9,9 @@ const UserModel = {
     db.query(query, [username, id, password], (err, results) => {
       if (err) {
         console.log(err)
-        callback(err, null);
+        callback(err);
       } else {
-        callback(null, results.insertId);
+        callback(null);
       }
     });
   },

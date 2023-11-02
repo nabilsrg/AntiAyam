@@ -1,2 +1,2 @@
 # AntiAyam
-Node.js and XAMPP
+An Chat Aplication using Node.js, and XAMPP

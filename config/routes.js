@@ -8,6 +8,11 @@ router.get('/AntiAyam/login', (req, res) => {
     res.render('login')
 }); 
 
+router.get('/AntiAyam/register', (req, res) => {
+    res.render('register')
+}); 
+
+
 router.get('/AntiAyam', (req, res) => {
     res.render('chat')
 }); 

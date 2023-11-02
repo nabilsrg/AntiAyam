@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chat App</title>
+  </head>
+
+  <body>
+    <div class="log-form">
+      <h2>Regiter your account</h2>
+      <form action="/user/register" method="POST" id="loginForm">
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="username"
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="password"
+        />
+        <button type="submit" class="btn">Login</button>
+        <a class="forgot" href="#">Forgot Username?</a>
+      </form>
+    </div>
+    <!--end log form -->
+
+    <script>
+      const form = document.getElementById("loginForm");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form); // Buat objek FormData
+        const payload = new URLSearchParams(formData);
+
+        const response = await fetch("/user/register", {
+          method: "POST",
+          body: payload,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.message === "Pengguna berhasil terdaftar") {
+            // Redirect ke halaman beranda atau halaman lainnya
+            window.location.href = "/AntiAyam/login"; //redirect ke halaman /AntiAyam
+          }
+        } else {
+          const errorData = await response.json();
+          alert("register failed: " + errorData.message);
+        }
+      });
+    </script>
+  </body>
+</html>

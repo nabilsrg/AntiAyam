@@ -6,7 +6,7 @@ const UserModel = {
   createUser: (user, callback) => {
     const { username, id, password } = user;
     const query = 'INSERT INTO users (username, id, password) VALUES (?, ?, ?)';
-    db.query(query, [username, id, password], (err, results) => {
+    db.query(query, [username, id, password], (err) => {
       if (err) {
         console.log(err)
         callback(err);

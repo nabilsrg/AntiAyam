@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chat App</title>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      #message-container {
+        width: 80%;
+        max-width: 1200px;
+      }
+
+      #message-container div {
+        background-color: #ccc;
+        padding: 5px;
+      }
+
+      #message-container div:nth-child(2n) {
+        background-color: #fff;
+      }
+
+      #send-container {
+        position: fixed;
+        padding-bottom: 30px;
+        bottom: 0;
+        background-color: white;
+        max-width: 1200px;
+        width: 80%;
+        display: flex;
+      }
+
+      #message-input {
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="message-container"></div>
+    <form action="/message/send" method="POST" id="send-container">
+      <input type="text" name="content" id="content" />
+      <button type="submit" id="send-button">Send</button>
+    </form>
+    <script type="text/javascript" defer>
+      let socket = io();
+      const username = localStorage.getItem("username");
+      if (username) {
+        // Gunakan data respons sesuai kebutuhan
+        socket.emit("new-user", username);
+      } else {
+        console.log("tidak ada response data");
+      }
+
+      const sendForm = document.getElementById("send-container");
+      const contentInput = document.getElementById("content");
+      const messageContainer = document.getElementById("message-container");
+
+      socket.on("chat-message", (data) => {
+        appendMessage(`${data.name}: ${data.message}`);
+      });
+
+      sendForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Mencegah pembaruan halaman
+
+        const formData = new FormData(sendForm); // Buat objek FormData
+        const payload = new URLSearchParams(formData);
+
+        try {
+          const response = await fetch("/message/send", {
+            method: "POST",
+            body: payload,
+          });
+
+          if (response.status === 201) {
+            // Jika permintaan berhasil, tambahkan pesan ke kontainer
+            const result = await response.json();
+            const message = contentInput.value;
+            appendMessage(`You: ${message}`);
+
+            // Memanggil fungsi socket send-chat-message
+            socket.emit("send-chat-message", message);
+
+            // Hapus teks dari input
+            contentInput.value = "";
+          } else {
+            // Tangani kesalahan jika diperlukan
+            console.error("Gagal mengirim pesan.");
+          }
+        } catch (error) {
+          console.error("Terjadi kesalahan: ", error);
+        }
+      });
+
+      function appendMessage(message) {
+        const messageElement = document.createElement("div");
+        messageElement.innerText = message;
+        messageContainer.append(messageElement);
+      }
+    </script>
+  </body>
+</html>

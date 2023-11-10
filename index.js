@@ -11,6 +11,7 @@ const app = express();
 let server = http.createServer(app)
 let io = socketio(server)
 // Middleware dan konfigurasi lainnya
+app.use('/public', express.static('public'));
 app.use(express.static('public'));
 app.set('views', './app/views')
 app.set('view engine', 'ejs')

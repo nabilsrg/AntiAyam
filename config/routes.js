@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userRoutes = require('../app/Routes/UserRoutes')
 const messageRoutes = require('../app/Routes/MessageRoutes')
+const reportRoutes = require('../app/Routes/ReportRoutes')
 
 // Rute untuk halaman beranda
 router.get('/AntiAyam/login', (req, res) => {
@@ -19,5 +20,6 @@ router.get('/AntiAyam', (req, res) => {
 
 router.use('/user', userRoutes);
 router.use('/message', messageRoutes)
+router.use('/report', reportRoutes)
 
 module.exports = router;

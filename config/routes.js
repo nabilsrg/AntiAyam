@@ -17,6 +17,10 @@ router.get('/AntiAyam', (req, res) => {
     res.render('chat')
 }); 
 
+router.get('/AntiAyam/admin', (req, res) => {
+    res.render('chat')
+}); 
+
 router.use('/user', userRoutes);
 router.use('/message', messageRoutes)
 

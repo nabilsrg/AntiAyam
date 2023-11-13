@@ -29,7 +29,11 @@ const UserModel = {
           // Bandingkan password yang diinputkan dengan password dalam database
           if (password === user.password) {
             // Password cocok
-            callback(null, true, user.username);
+            if(user.isAdmin){
+              callback(null, true, user.username, true);
+            } else {
+              callback(null, true, user.username, false);
+            }
           } else {
             // Password tidak cocok
             callback(null, false, null);

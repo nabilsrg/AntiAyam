@@ -285,6 +285,9 @@
             localStorage.setItem("username", data.user);
             // Redirect ke halaman beranda atau halaman lainnya
             window.location.href = "/AntiAyam"; //redirect ke halaman /AntiAyam
+          } else if (data.message === "Admin berhasil masuk") {
+            localStorage.setItem("username", data.user);
+            window.location.href = "/AntiAyam/admin";
           }
         } else {
           const errorData = await response.json();

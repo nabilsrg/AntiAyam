@@ -38,16 +38,21 @@ const UserController = {
     }
 
     // Melakukan otentikasi pengguna
-    UserModel.authenticateUser(id, password, (err, match, user) => {
+    UserModel.authenticateUser(id, password, (err, match, user, isAdmin) => {
       if (err) {
         console.error('Gagal masuk pengguna: ' + err.message);
         return res.status(401).json({ message: 'Gagal masuk pengguna' });
       } else {
         if (match) {
-        console.log('Pengguna berhasil masuk: ' + user);
-
-        req.session.username = user;
-        return res.status(200).json({ message: 'Pengguna berhasil masuk', user: user});
+          if (isAdmin) {
+            console.log('Admin berhasil masuk: ' + user);
+            req.session.username = user;
+            return res.status(200).json({ message: 'Admin berhasil masuk', user: user});
+          } else {
+            console.log('Pengguna berhasil masuk: ' + user);
+            req.session.username = user;
+            return res.status(200).json({ message: 'Pengguna berhasil masuk', user: user});
+          }
         } else {
             console.log('Pengguna gagal masuk');
 

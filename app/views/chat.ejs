@@ -3,53 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Chat App</title>
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <title>Public Chat</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS -->
     <style>
       body {
-        padding: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
+        font-family: Arial, sans-serif;
       }
 
-      #message-container {
-        width: 80%;
-        max-width: 1200px;
+      #chat {
+        height: 400px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
       }
 
-      #message-container div {
-        background-color: #ccc;
-        padding: 5px;
+      #chat .message {
+        margin-bottom: 10px;
       }
 
-      #message-container div:nth-child(2n) {
-        background-color: #fff;
+      #chat .message .name {
+        font-weight: bold;
       }
 
-      #send-container {
-        position: fixed;
-        padding-bottom: 30px;
-        bottom: 0;
-        background-color: white;
-        max-width: 1200px;
-        width: 80%;
-        display: flex;
+      #chat .message .text {
+        margin-top: 5px;
       }
 
-      #message-input {
-        flex-grow: 1;
+      #content {
+        margin-top: 10px;
       }
     </style>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <div id="message-container"></div>
-    <form action="/message/send" method="POST" id="send-container">
-      <input type="text" name="content" id="content" />
-      <button type="submit" id="send-button">Send</button>
-    </form>
-    <script type="text/javascript" defer>
+    <!-- Chat Section -->
+    <section id="chatSection" class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h2>Public Chat</h2>
+          <div id="chat"></div>
+          <form action="/message/send" method="POST" id="messageForm">
+            <label for="content">Message:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="content"
+              id="content"
+              placeholder="Enter your message"
+              required
+            />
+            <button type="submit" id="send-button" class="btn btn-primary">
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bootstrap & jQuery JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>
       let socket = io();
       const username = localStorage.getItem("username");
       if (username) {
@@ -59,12 +79,12 @@
         console.log("tidak ada response data");
       }
 
-      const sendForm = document.getElementById("send-container");
+      const sendForm = document.getElementById("messageForm");
       const contentInput = document.getElementById("content");
-      const messageContainer = document.getElementById("message-container");
+      const messageContainer = document.getElementById("chat");
 
       socket.on("chat-message", (data) => {
-        appendMessage(`${data.name}: ${data.message}`);
+        appendMessage(data);
       });
 
       sendForm.addEventListener("submit", async (e) => {
@@ -83,7 +103,11 @@
             // Jika permintaan berhasil, tambahkan pesan ke kontainer
             const result = await response.json();
             const message = contentInput.value;
-            appendMessage(`You: ${message}`);
+            const data = {
+              name: username,
+              message: message,
+            };
+            appendMessageYou(data);
 
             // Memanggil fungsi socket send-chat-message
             socket.emit("send-chat-message", message);
@@ -99,10 +123,38 @@
         }
       });
 
-      function appendMessage(message) {
-        const messageElement = document.createElement("div");
-        messageElement.innerText = message;
-        messageContainer.append(messageElement);
+      function appendMessage(data) {
+        var name = data.name;
+        var text = data.message;
+
+        var messageElement = $("<div>").addClass("message");
+        var nameElement = $("<div>").addClass("name").text(name);
+        var textElement = $("<div>").addClass("text").text(text);
+
+        messageElement.append(nameElement);
+        messageElement.append(textElement);
+
+        $("#chat").append(messageElement);
+      }
+
+      function appendMessageYou(data) {
+        var name = data.name;
+        var text = data.message;
+
+        var messageElement = $("<div>").addClass("message");
+        var nameElement = $("<div>")
+          .addClass("name")
+          .text(name)
+          .css("text-align", "right");
+        var textElement = $("<div>")
+          .addClass("text")
+          .text(text)
+          .css("text-align", "right");
+
+        messageElement.append(nameElement);
+        messageElement.append(textElement);
+
+        $("#chat").append(messageElement);
       }
     </script>
   </body>

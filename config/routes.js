@@ -14,7 +14,8 @@ router.get('/AntiAyam/register', (req, res) => {
 
 
 router.get('/AntiAyam', (req, res) => {
-    res.render('chat')
+    const username = req.session.username
+    res.render('chat', {data: username})
 }); 
 
 router.get('/AntiAyam/admin', (req, res) => {

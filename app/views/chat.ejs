@@ -13,13 +13,46 @@
     <style>
       body {
         font-family: Arial, sans-serif;
+        background-color: #110e26;
+      }
+
+      #navbar {
+        border: 2px solid #000000;
+        height: 50px;
+        background-color: #292851;
+      }
+
+      #box-nav {
+        border-radius: 6px;
+        background-color: #17266e;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+
+      #logo {
+        height: 6px;
+      }
+
+      #logo p {
+        margin: 0;
+        line-height: 6px;
+        font-size: xx-large;
+        color: #599ad1;
+      }
+
+      #box-nav p {
+        margin: 0;
+        color: #a3bdd8;
       }
 
       #chat {
-        height: 400px;
+        height: 500px;
         overflow-y: scroll;
-        border: 1px solid #ccc;
         padding: 10px;
+        background-color: #171b38;
+        color: #737799;
       }
 
       #chat .message {
@@ -36,30 +69,45 @@
 
       #content {
         margin-top: 10px;
+        margin-right: 5px;
+        box-sizing: border-box;
+      }
+
+      #send-button {
+        margin-top: 10px;
+      }
+
+      #message-input {
+        align-items: center;
       }
     </style>
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   </head>
   <body>
+    <div id="navbar" class="d-flex justify-content-between align-items-center">
+      <div id="logo" class="ml-5"><p>AntiAyam</p></div>
+      <div id="box-nav" class="mr-5"><p><%= data %></p></div>
+    </div>
     <!-- Chat Section -->
     <section id="chatSection" class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2>Public Chat</h2>
+          <h2 style="color: #7b7e9a">Public Chat</h2>
           <div id="chat"></div>
           <form action="/message/send" method="POST" id="messageForm">
-            <label for="content">Message:</label>
-            <input
-              type="text"
-              class="form-control"
-              name="content"
-              id="content"
-              placeholder="Enter your message"
-              required
-            />
-            <button type="submit" id="send-button" class="btn btn-primary">
-              Send
-            </button>
+            <div id="message-input" class="d-flex">
+              <input
+                type="text"
+                class="form-control"
+                name="content"
+                id="content"
+                placeholder="Enter your message"
+                required
+              />
+              <button type="submit" id="send-button" class="btn btn-primary">
+                Send
+              </button>
+            </div>
           </form>
         </div>
       </div>

@@ -1,6 +1,8 @@
 const express = require('express');
 const http = require("http");
 const session = require('express-session');
+const path = require('path');
+
 
 const socketio = require("socket.io")
 
@@ -13,7 +15,7 @@ let io = socketio(server)
 // Middleware dan konfigurasi lainnya
 app.set("views", __dirname + "/app/views");
 app.set("view engine", "ejs");
-app.use('/public', express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());

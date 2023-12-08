@@ -4,11 +4,15 @@ const userRoutes = require('../app/Routes/UserRoutes')
 const messageRoutes = require('../app/Routes/MessageRoutes')
 
 // Rute untuk halaman beranda
-router.get('/AntiAyam/login', (req, res) => {
+router.get('/', (req, res) => {
+    res.redirect('/login')
+});
+
+router.get('/login', (req, res) => {
     res.render('login')
 }); 
 
-router.get('/AntiAyam/register', (req, res) => {
+router.get('/register', (req, res) => {
     res.render('register')
 }); 
 

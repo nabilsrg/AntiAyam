@@ -1,9 +1,9 @@
 const mysql = require('mysql')
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
+    host: "antiayam-db.cfvckgueuywx.us-east-1.rds.amazonaws.com",
+    user: "admin",
+    password: "antiayam987",
     database: "antiayam"
 })
 

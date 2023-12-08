@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
 app.use(session({
   secret: 'rahasia', // Ganti dengan string rahasia yang kuat
   resave: false,

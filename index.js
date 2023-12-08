@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require("http");
-const session = require('cookie-session');
+const session = require('express-session');
 const path = require('path');
 
 
@@ -21,7 +21,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set('trust proxy', 1);
 app.use(session({
   secret: 'rahasia', // Ganti dengan string rahasia yang kuat
   resave: false,
